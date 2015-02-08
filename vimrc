@@ -23,10 +23,13 @@ set nocompatible
 "MOJE USTAWIENIA
 set nu
 "set guifont=Envy\ Code\ R\ 11
-set guifont=DejaVu\ Sans\ Mono\ 11
+"set guifont=DejaVu\ Sans\ Mono\ 11
+"set guifont=Liberation\ Mono\ 10
+set guifont=Droid\ Sans\ Mono\ 11
 
 if has('gui_running')
-    colors tango2
+    "colors google-prettify
+    colors github
 else
     colors default
 endif
@@ -42,27 +45,32 @@ set wildmenu
 
 inoremap jj <Esc>
 inoremap <esc> <nop>
+nnoremap gO O<ESC>j
+nnoremap go o<ESC>k
 
 "ustawienia zaznaczania lini 80 znakow
 "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 "match OverLength /\%81v.\+/
-set cc=100
+set cc=80
 hi ColorColumn guibg=#2E3836
 
 "ustawienia tabulacji
 set expandtab
 set shiftwidth=4
 set softtabstop=4
+let c_no_curly_error=1
 
 "ustawienia winmanager
 map <c-w><c-t> :WMToggle<cr>
 
 "ustawienia dodatku Tagbar
 nmap <F8> :TagbarToggle<cr>
+nmap s <Plug>(easymotion-s)
 
 nnoremap <leader>ve :vsplit $MYVIMRC<cr>
 nnoremap <leader>vs :source $MYVIMRC<cr>
 nnoremap <leader>vk :vsplit $HOME/Dropbox/vim/VIMKEYS<cr>
+nnoremap <leader>n :NERDTreeToggle<cr>
 
 nnoremap <leader>w :w<cr>
 nnoremap <C-h> <c-w>h
@@ -164,3 +172,4 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
+execute pathogen#infect()
