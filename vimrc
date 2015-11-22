@@ -1,13 +1,13 @@
 " An example for a vimrc file.
 "
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2008 Dec 17
+" Maintainer:   Bram Moolenaar <Bram@vim.org>
+" Last change:  2008 Dec 17
 "
 " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
-"	      for Amiga:  s:.vimrc
+"             for Amiga:  s:.vimrc
 "  for MS-DOS and Win32:  $VIM\_vimrc
-"	    for OpenVMS:  sys$login:.vimrc
+"           for OpenVMS:  sys$login:.vimrc
 
 
 " When started as "evim", evim.vim will already have done these settings.
@@ -25,13 +25,18 @@ set nu
 "set guifont=Envy\ Code\ R\ 11
 "set guifont=DejaVu\ Sans\ Mono\ 11
 "set guifont=Liberation\ Mono\ 10
-set guifont=Droid\ Sans\ Mono\ 11
+set guifont=Droid\ Sans\ Mono\ 12
+"set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 12
+"set guifont=Inconsolata\ for\ Powerline\ Medium\ 13
 
 if has('gui_running')
     "colors google-prettify
-    colors github
+    "colors github
+    "colors dracula
+    colors bclear
 else
-    colors default
+    "colors default
+    colors dracula
 endif
 
 set laststatus=2
@@ -39,6 +44,10 @@ set laststatus=2
 set guioptions=agit
 
 set tw=0 wrap linebreak
+set list lcs=trail:·,tab:»·
+set showbreak=>
+set scrolloff=5
+set noswapfile
 
 "Dopasowywanie nazw plikow/buforow w :b <Tab>
 set wildmenu
@@ -47,6 +56,9 @@ inoremap jj <Esc>
 inoremap <esc> <nop>
 nnoremap gO O<ESC>j
 nnoremap go o<ESC>k
+nnoremap * *<c-o>
+nnoremap <F1> <nop>
+noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 
 "ustawienia zaznaczania lini 80 znakow
 "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
@@ -59,6 +71,26 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 let c_no_curly_error=1
+let g:airline_powerline_fonts=1
+let g:airline_theme='papercolor'
+
+set conceallevel=2
+set concealcursor=n
+
+let g:vim_json_syntax_conceal=2
+let g:javascript_conceal_function   = "λ"
+let g:javascript_conceal_null       = "ø"
+let g:javascript_conceal_this       = "@"
+let g:javascript_conceal_return     = "⇚"
+let g:javascript_conceal_undefined  = "¿"
+let g:javascript_conceal_NaN        = "ℕ"
+let g:javascript_conceal_prototype  = "¶"
+let g:javascript_conceal_static     = "•"
+let g:javascript_conceal_super      = "Ω"
+let g:javascript_conceal_if         = "?"
+let g:javascript_conceal_else       = "ε"
+let g:javascript_conceal_var        = "δ"
+":exe 'syntax keyword jsBooleanfalse false conceal cchar=F'
 
 "ustawienia winmanager
 map <c-w><c-t> :WMToggle<cr>
@@ -66,6 +98,10 @@ map <c-w><c-t> :WMToggle<cr>
 "ustawienia dodatku Tagbar
 nmap <F8> :TagbarToggle<cr>
 nmap s <Plug>(easymotion-s)
+nmap =j :%!python -m json.tool<cr>
+
+"explorer
+command! E Explore
 
 nnoremap <leader>ve :vsplit $MYVIMRC<cr>
 nnoremap <leader>vs :source $MYVIMRC<cr>
@@ -89,6 +125,8 @@ iabbrev afor for (i=0; i <; ++i) {<cr>}
 
 "set spelllang=pl,en
 "set spell
+"coffeeScript auto compile on write
+autocmd BufWritePost *.coffee silent make!
 
 "KONIEC MOICH USTAWIEN
 """"""""""""""""""""""""
@@ -99,14 +137,14 @@ iabbrev afor for (i=0; i <; ++i) {<cr>}
 set backspace=indent,eol,start
 
 if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
+  set nobackup          " do not keep a backup file, use versions instead
 else
-  set nobackup		" keep a backup file
+  set nobackup          " keep a backup file
 endif
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
+set history=50          " keep 50 lines of command line history
+set ruler               " show the cursor position all the time
+set showcmd             " display incomplete commands
+set incsearch           " do incremental searching
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
@@ -160,7 +198,7 @@ if has("autocmd")
 
 else
 
-  set autoindent		" always set autoindenting on
+  set autoindent            " always set autoindenting on
 
 endif " has("autocmd")
 
@@ -169,7 +207,25 @@ endif " has("autocmd")
 " Only define it when not defined already.
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+                \ | wincmd p | diffthis
 endif
 
-execute pathogen#infect()
+call plug#begin('~/.vim/plugged')
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'kchmck/vim-coffee-script'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'tpope/vim-fireplace'
+Plug 'tpope/vim-fugitive'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'derekwyatt/vim-scala'
+Plug 'bling/vim-airline'
+Plug 'vim-scripts/a.vim'
+Plug 'ervandew/supertab'
+Plug 'elzr/vim-json'
+Plug 'pangloss/vim-javascript'
+Plug 'ryanoasis/vim-devicons'
+call plug#end()
+"execute pathogen#infect()
+hi! link Conceal Keyword
