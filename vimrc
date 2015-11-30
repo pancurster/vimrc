@@ -102,6 +102,10 @@ let g:airline#extensions#tabline#tab_min_count = 2
 let g:airline#extensions#tabline#show_close_button = 0
 let g:airline#extensions#tabline#show_buffers = 0
 "}}}
+"--------- syntastic ---------{{{
+let g:syntastic_error_symbol = "✗"
+let g:syntastic_warning_symbol = "⚠"
+"}}}
 "
 "-------- concealing --------{{{
 set conceallevel=2
