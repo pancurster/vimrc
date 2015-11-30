@@ -18,16 +18,17 @@ endif
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
+set encoding=utf8
 
-"""""""""""""""""""""""""""""
-"MOJE USTAWIENIA
+"
+" Look&Feel ------------------ {{{
 set nu
 "set guifont=Envy\ Code\ R\ 11
 "set guifont=DejaVu\ Sans\ Mono\ 11
 "set guifont=Liberation\ Mono\ 10
-set guifont=Droid\ Sans\ Mono\ 12
+"set guifont=Droid\ Sans\ Mono\ 12
 "set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 12
-"set guifont=Inconsolata\ for\ Powerline\ Medium\ 13
+set guifont=Inconsolata\ for\ Powerline\ Medium\ 13
 
 if has('gui_running')
     "colors google-prettify
@@ -38,16 +39,18 @@ else
     "colors default
     colors dracula
 endif
-
+"
+"}}}
+"
 set laststatus=2
-
 set guioptions=agit
-
 set tw=0 wrap linebreak
 set list lcs=trail:·,tab:»·
 set showbreak=>
 set scrolloff=5
 set noswapfile
+set clipboard+=unnamed
+set fillchars=vert:│,fold:─
 
 "Dopasowywanie nazw plikow/buforow w :b <Tab>
 set wildmenu
@@ -61,27 +64,70 @@ nnoremap <F1> <nop>
 noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 
 "ustawienia zaznaczania lini 80 znakow
-"highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-"match OverLength /\%81v.\+/
 set cc=80
 hi ColorColumn guibg=#2E3836
 
-"ustawienia tabulacji
+"------- ustawienia tabulacji --- {{{
 set expandtab
 set shiftwidth=4
 set softtabstop=4
+"}}}
+"
+"-------- folding ------------ {{{
+set foldmethod=indent
+set foldnestmax=1
+set foldtext=MyFoldText()
+set foldlevelstart=10 "open all folds at start
+"auto open folds when file fit in window verticaly
+"autocmd! BufWinEnter * if line('$')<winheight(0) | exe "normal! zR" | endif
+nnoremap <c-z> mzzMzvzz15<c-e>
+
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+endfunction
+"}}}
+"}}}
+"
+"-------- airline ----------{{{
 let c_no_curly_error=1
 let g:airline_powerline_fonts=1
 let g:airline_theme='papercolor'
-
+let g:airline_extensions = ['tabline', 'branch', 'syntastic', 'whitespace']
+"}}}
+"
+"-------- concealing --------{{{
 set conceallevel=2
-set concealcursor=n
+"set concealcursor=n
+
+nnoremap <leader>c :call ConcealToggle()<cr>
+function! ConcealToggle()
+    if &cole
+        set cole=0
+    else
+        set cole=2
+    endif
+endfunction
 
 let g:vim_json_syntax_conceal=2
 let g:javascript_conceal_function   = "λ"
 let g:javascript_conceal_null       = "ø"
 let g:javascript_conceal_this       = "@"
-let g:javascript_conceal_return     = "⇚"
+"let g:javascript_conceal_return     = "⪦"
+"let g:javascript_conceal_return     = ""
+let g:javascript_conceal_return     = ""
+"let g:javascript_conceal_return     = ""
 let g:javascript_conceal_undefined  = "¿"
 let g:javascript_conceal_NaN        = "ℕ"
 let g:javascript_conceal_prototype  = "¶"
@@ -89,9 +135,18 @@ let g:javascript_conceal_static     = "•"
 let g:javascript_conceal_super      = "Ω"
 let g:javascript_conceal_if         = "?"
 let g:javascript_conceal_else       = "ε"
-let g:javascript_conceal_var        = "δ"
+"let g:javascript_conceal_var        = "δ"
+let g:javascript_conceal_var        = "•"
 ":exe 'syntax keyword jsBooleanfalse false conceal cchar=F'
+"}}}
+"
+"-------- snipets ------------{{{
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"}}}
 
+"---------- mappings -----------{{{
 "ustawienia winmanager
 map <c-w><c-t> :WMToggle<cr>
 
@@ -103,7 +158,7 @@ nmap =j :%!python -m json.tool<cr>
 "explorer
 command! E Explore
 
-nnoremap <leader>ve :vsplit $MYVIMRC<cr>
+nnoremap <leader>ve :tabnew $MYVIMRC<cr>
 nnoremap <leader>vs :source $MYVIMRC<cr>
 nnoremap <leader>vk :vsplit $HOME/Dropbox/vim/VIMKEYS<cr>
 nnoremap <leader>n :NERDTreeToggle<cr>
@@ -119,8 +174,13 @@ vnoremap <C-]> g<C-]>
 nnoremap g<C-]> <C-]>
 vnoremap g<C-]> <C-]>
 
+nnoremap <space> za
+vnoremap <space> za
+"}}}
+
 iabbrev amain int main (int argc, char* argv[]) <cr>{<cr>return 0;<cr>}
 iabbrev afor for (i=0; i <; ++i) {<cr>}
+"iabbrev fn /**<cr> * @param {String}<cr> * @returns {Boolean}<cr>function() {<cr>}
 
 
 "set spelllang=pl,en
@@ -128,7 +188,8 @@ iabbrev afor for (i=0; i <; ++i) {<cr>}
 "coffeeScript auto compile on write
 autocmd BufWritePost *.coffee silent make!
 
-"KONIEC MOICH USTAWIEN
+"
+" Generic Settings {{{
 """"""""""""""""""""""""
 " KEYS
 """"""""""""""""""""""""
@@ -166,6 +227,7 @@ endif
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
+  set synmaxcol=800
 endif
 
 " Only do this part when compiled with support for autocommands.
@@ -209,8 +271,20 @@ if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
                 \ | wincmd p | diffthis
 endif
+"}}}
+"
+function! ToggleFullScreen() "{{{
+   call system("wmctrl -i -r ".v:windowid." -b toggle,fullscreen")
+   redraw
+endfunction
+
+nnoremap <M-f> :call ToggleFullScreen()<CR>
+inoremap <M-f> <C-\><C-O>:call ToggleFullScreen()<CR>
+"}}}
 
 call plug#begin('~/.vim/plugged')
+Plug 'junegunn/goyo.vim'
+Plug 'scrooloose/syntastic'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
@@ -218,14 +292,71 @@ Plug 'kchmck/vim-coffee-script'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'derekwyatt/vim-scala'
 Plug 'bling/vim-airline'
 Plug 'vim-scripts/a.vim'
 Plug 'ervandew/supertab'
 Plug 'elzr/vim-json'
+Plug 'andrewstuart/vim-underscore'
+Plug 'prurigro/vim-markdown-concealed'
+Plug 'vimwiki/vimwiki'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'pangloss/vim-javascript'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
-"execute pathogen#infect()
+
 hi! link Conceal Keyword
+hi! ColorColumn guibg=#F5FCFF
+
+" Vim {{{
+augroup ft_vim
+    au!
+    au Filetype vim setlocal foldmethod=marker
+augroup END
+" }}}
+
+" Vimwiki {{{
+augroup ft_vimwiki
+    au!
+    "does not work
+    "au BufNewFile,BufRead *.wiki setlocal foldmethod=syntax
+    let g:vimwiki_hl_headers=1
+    let g:vimwiki_folding='indent'
+    let wiki = {}
+    let wiki.path = '~/vimwiki/'
+    let wiki.path_html = '~/vimwiki_html'
+    let wiki.nested_syntaxes = {'python': 'python', 'c++': 'cpp', 'js': 'javascript'}
+    let g:vimwiki_list = [wiki]
+    function! VimwikiLinkHandler(link) " --- {{{
+        " Use Vim to open external files with the 'vfile:' scheme.  E.g.:
+        "   1) [[vfile:~/Code/PythonProject/abc123.py]]
+        "   2) [[vfile:./|Wiki Home]]
+        let link = a:link
+        if link =~# '^vfile:'
+            let link = link[1:]
+        else
+            return 0
+        endif
+        let link_infos = vimwiki#base#resolve_link(link)
+        if link_infos.filename == ''
+            echom 'Vimwiki Error: Unable to resolve link!'
+            return 0
+        else
+            exe 'tabnew ' . fnameescape(link_infos.filename)
+            return 1
+        endif
+    endfunction
+    "}}}
+augroup END
+" }}}
+
+" Json {{{
+augroup ft_json
+    au!
+    au Filetype json setlocal foldnestmax=100
+augroup END
+" }}}
+
