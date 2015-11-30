@@ -55,14 +55,6 @@ set fillchars=vert:│,fold:─
 "Dopasowywanie nazw plikow/buforow w :b <Tab>
 set wildmenu
 
-inoremap jj <Esc>
-inoremap <esc> <nop>
-nnoremap gO O<ESC>j
-nnoremap go o<ESC>k
-nnoremap * *<c-o>
-nnoremap <F1> <nop>
-noremap <leader><space> :noh<cr>:call clearmatches()<cr>
-
 "ustawienia zaznaczania lini 80 znakow
 set cc=80
 hi ColorColumn guibg=#2E3836
@@ -148,6 +140,15 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 "---------- mappings -----------{{{
 "ustawienia winmanager
+inoremap jj <Esc>
+inoremap <esc> <nop>
+nnoremap gO O<ESC>j
+nnoremap go o<ESC>k
+nnoremap * *<c-o>
+nnoremap <F1> <nop>
+nnoremap <tab> gt
+noremap <leader><space> :noh<cr>:call clearmatches()<cr>
+
 map <c-w><c-t> :WMToggle<cr>
 
 "ustawienia dodatku Tagbar
