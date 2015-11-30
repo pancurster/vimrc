@@ -44,6 +44,7 @@ endif
 "
 set laststatus=2
 set guioptions=agit
+set showtabline=1
 set tw=0 wrap linebreak
 set list lcs=trail:·,tab:»·
 set showbreak=>
@@ -97,6 +98,9 @@ let c_no_curly_error=1
 let g:airline_powerline_fonts=1
 let g:airline_theme='papercolor'
 let g:airline_extensions = ['tabline', 'branch', 'syntastic', 'whitespace']
+let g:airline#extensions#tabline#tab_min_count = 2
+let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_buffers = 0
 "}}}
 "
 "-------- concealing --------{{{
