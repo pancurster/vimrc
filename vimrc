@@ -176,6 +176,7 @@ nnoremap <leader>ve :edit $MYVIMRC<cr>
 nnoremap <leader>vs :source $MYVIMRC<cr>
 nnoremap <leader>vk :vsplit $HOME/Dropbox/vim/VIMKEYS<cr>
 nnoremap <leader>n :NERDTreeToggle<cr>
+nnoremap <leader>g :%!grep
 
 nnoremap <leader>w :w<cr>
 nnoremap <C-h> <c-w>h
