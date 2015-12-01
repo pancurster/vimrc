@@ -106,6 +106,9 @@ let g:airline#extensions#tabline#show_buffers = 0
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
 "}}}
+"---------- gitgutter -----------{{{
+let g:gitgutter_realtime = 0
+"}}}
 "
 "-------- concealing --------{{{
 set conceallevel=2
@@ -155,6 +158,7 @@ nnoremap go o<ESC>k
 nnoremap * *<c-o>
 nnoremap <F1> <nop>
 nnoremap <tab> gt
+nnoremap T :tabnew<cr>
 noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 
 map <c-w><c-t> :WMToggle<cr>
@@ -167,7 +171,8 @@ nmap =j :%!python -m json.tool<cr>
 "explorer
 command! E Explore
 
-nnoremap <leader>ve :tabnew $MYVIMRC<cr>
+nnoremap <leader>vE :tabnew $MYVIMRC<cr>
+nnoremap <leader>ve :edit $MYVIMRC<cr>
 nnoremap <leader>vs :source $MYVIMRC<cr>
 nnoremap <leader>vk :vsplit $HOME/Dropbox/vim/VIMKEYS<cr>
 nnoremap <leader>n :NERDTreeToggle<cr>
@@ -303,7 +308,7 @@ Plug 'tpope/vim-fireplace'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'derekwyatt/vim-scala'
+Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'bling/vim-airline'
 Plug 'vim-scripts/a.vim'
 Plug 'ervandew/supertab'
@@ -313,8 +318,10 @@ Plug 'prurigro/vim-markdown-concealed'
 Plug 'vimwiki/vimwiki'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'ryanoasis/vim-devicons'
+Plug 'MicahElliott/vrod', { 'for': 'racket' }
+Plug 'wlangstroth/vim-racket', { 'for': 'racket' }
 call plug#end()
 
 hi! link Conceal Keyword
