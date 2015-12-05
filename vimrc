@@ -9,18 +9,11 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "           for OpenVMS:  sys$login:.vimrc
 
-
-" When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-  finish
-endif
-
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 set encoding=utf8
 
-"
 " Look&Feel ------------------ {{{
 set nu
 "set guifont=Envy\ Code\ R\ 11
@@ -41,7 +34,8 @@ else
 endif
 "
 "}}}
-"
+
+" General --------------- {{{
 set laststatus=2
 set guioptions=agit
 set showtabline=1
@@ -52,6 +46,8 @@ set scrolloff=5
 set noswapfile
 set clipboard+=unnamed
 set fillchars=vert:│,fold:─
+"set spelllang=pl,en
+"set spell
 
 "Dopasowywanie nazw plikow/buforow w :b <Tab>
 set wildmenu
@@ -59,14 +55,15 @@ set wildmenu
 "ustawienia zaznaczania lini 80 znakow
 set cc=80
 hi ColorColumn guibg=#2E3836
+"}}}
 
-"------- ustawienia tabulacji --- {{{
+" Tab settings --- {{{
 set expandtab
 set shiftwidth=4
 set softtabstop=4
 "}}}
-"
-"-------- folding ------------ {{{
+
+" Folding ------------ {{{
 set foldmethod=indent
 set foldnestmax=1
 set foldtext=MyFoldText()
@@ -92,8 +89,8 @@ function! MyFoldText() " {{{
 endfunction
 "}}}
 "}}}
-"
-"-------- airline ----------{{{
+
+" Airline ----------{{{
 let c_no_curly_error=1
 let g:airline_powerline_fonts=1
 let g:airline_theme='papercolor'
@@ -102,15 +99,17 @@ let g:airline#extensions#tabline#tab_min_count = 2
 let g:airline#extensions#tabline#show_close_button = 0
 let g:airline#extensions#tabline#show_buffers = 0
 "}}}
-"--------- syntastic ---------{{{
+
+" Syntastic ---------{{{
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
 "}}}
-"---------- gitgutter -----------{{{
+
+" Gitgutter -----------{{{
 let g:gitgutter_realtime = 0
 "}}}
-"
-"-------- concealing --------{{{
+
+" Concealing --------{{{
 set conceallevel=2
 "set concealcursor=n
 
@@ -142,14 +141,14 @@ let g:javascript_conceal_else       = "ε"
 let g:javascript_conceal_var        = "•"
 ":exe 'syntax keyword jsBooleanfalse false conceal cchar=F'
 "}}}
-"
-"-------- snipets ------------{{{
+
+" Snipets ------------{{{
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "}}}
 
-"---------- mappings -----------{{{
+" Mappings -----------{{{
 "ustawienia winmanager
 inoremap jj <Esc>
 inoremap <esc> <nop>
@@ -193,18 +192,18 @@ nnoremap <space> za
 vnoremap <space> za
 "}}}
 
+" Abbrev -------------{{{
 iabbrev amain int main (int argc, char* argv[]) <cr>{<cr>return 0;<cr>}
 iabbrev afor for (i=0; i <; ++i) {<cr>}
 "iabbrev fn /**<cr> * @param {String}<cr> * @returns {Boolean}<cr>function() {<cr>}
+"}}}
 
-
-"set spelllang=pl,en
-"set spell
-"coffeeScript auto compile on write
+" CoffeeScript ----------{{{
 autocmd BufWritePost *.coffee silent make!
+"}}}
 
-"
 " Generic Settings {{{
+
 """"""""""""""""""""""""
 " KEYS
 """"""""""""""""""""""""
@@ -287,8 +286,9 @@ if !exists(":DiffOrig")
                 \ | wincmd p | diffthis
 endif
 "}}}
-"
-function! ToggleFullScreen() "{{{
+
+" Functions --------------{{{
+function! ToggleFullScreen()
    call system("wmctrl -i -r ".v:windowid." -b toggle,fullscreen")
    redraw
 endfunction
@@ -297,6 +297,7 @@ nnoremap <M-f> :call ToggleFullScreen()<CR>
 inoremap <M-f> <C-\><C-O>:call ToggleFullScreen()<CR>
 "}}}
 
+" Pluggins ---------------------{{{
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
 Plug 'scrooloose/syntastic'
@@ -324,9 +325,12 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'MicahElliott/vrod', { 'for': 'racket' }
 Plug 'wlangstroth/vim-racket', { 'for': 'racket' }
 call plug#end()
+"}}}
 
+" Overwrite pluggins settings{{{
 hi! link Conceal Keyword
 hi! ColorColumn guibg=#F5FCFF
+"}}}
 
 " Vim {{{
 augroup ft_vim
