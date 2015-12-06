@@ -13,7 +13,6 @@
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 set encoding=utf8
-
 " Look&Feel ------------------ {{{
 set nu
 "set guifont=Envy\ Code\ R\ 11
@@ -21,7 +20,8 @@ set nu
 "set guifont=Liberation\ Mono\ 10
 "set guifont=Droid\ Sans\ Mono\ 12
 "set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 12
-set guifont=Inconsolata\ for\ Powerline\ Medium\ 13
+"set guifont=Inconsolata\ for\ Powerline\ Medium\ 13
+set guifont=Knack\ 12
 
 if has('gui_running')
     "colors google-prettify
@@ -148,6 +148,10 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "}}}
 
+" InterestingWords -----{{{
+let g:interestingWordsGUIColors = ['#8CCBEA', '#A4E57E', '#FFDB72', '#FF7272', '#FFB3FF', '#9999FF']
+" }}}
+
 " Mappings -----------{{{
 "ustawienia winmanager
 inoremap jj <Esc>
@@ -176,6 +180,8 @@ nnoremap <leader>vs :source $MYVIMRC<cr>
 nnoremap <leader>vk :vsplit $HOME/Dropbox/vim/VIMKEYS<cr>
 nnoremap <leader>n :NERDTreeToggle<cr>
 nnoremap <leader>g :%!grep
+"run current buffer:
+nnoremap <leader>r :!%:p<cr>
 
 nnoremap <leader>w :w<cr>
 nnoremap <C-h> <c-w>h
@@ -304,6 +310,7 @@ Plug 'scrooloose/syntastic'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
+Plug 'vasconcelloslf/vim-interestingwords'
 Plug 'kchmck/vim-coffee-script'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-fireplace'
