@@ -1,0 +1,31 @@
+snippet requn "Add AMD require with underscore lib" b
+var _ = require("underscore");
+endsnippet
+
+snippet reqlog "require project logger" b
+var logger = require("@nokia/logger").forPackage("${0:prefix_string}");
+endsnippet
+
+snippet use "use strict" b
+"use strict";
+endsnippet
+
+snippet aget "getResourceByUri" b
+var ${0:res} = pmMzframe.singleResourceByUri(${1:uri});
+endsnippet
+
+snippet aup "updateResource" b
+pmMzframe.updateResourceByUriGlobal(${1:uri}, ${2:object});
+endsnippet
+
+snippet li "logger info" b
+logger.info("${1:info_message}");
+endsnippet
+
+snippet ld "logger debug" b
+logger.debug("${1:dbg_message}");
+endsnippet
+
+snippet aexp "module.exports" b
+module.exports.${1:initialize} = $1;
+endsnippet
